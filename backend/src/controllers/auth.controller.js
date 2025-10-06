@@ -1,6 +1,8 @@
 import User from "../models/user.js"
 import bcrypt from 'bcryptjs';
 import generateToken from "../lib/utils.js"
+import { sendWelcomeEmail } from "../emails/emailHnadlers.js";
+import "dotenv/config"
 
 const signup = async (req, res) => {
     const { fullname, email, password } = req.body;
@@ -38,7 +40,13 @@ const signup = async (req, res) => {
             const token = generateToken(savedUser._id, res)
             // console.log("res",res)
             // console.log("token  ",token)
-            return res.status(201).json({ message: "user created successfully", user: savedUser })
+            res.status(201).json({ message: "user created successfully", user: savedUser })
+            try {
+                await sendWelcomeEmail(savedUser.email,savedUser.fullname,process.env.CLIENT_URL)
+                
+            } catch (error) {
+                
+            }
         } else {
             return res.status(400).json({ message: "invalid user details" })
         }
