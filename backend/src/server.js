@@ -4,6 +4,7 @@ import path from "path"
 import authRouter from './routes/auth.route.js';
 import messageroute from './routes/messages.route.js'
 import { connectDb } from './lib/db.js';
+import cookieparser from "cookie-parser"
 
 
 dotenv.config();
@@ -12,9 +13,17 @@ const PORT = process.env.PORT || 4001;
 //making ready for diployment 
 const __dirname = path.resolve()
 
+
+
+//middleware for form data 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(cookieparser())
 
+
+
+
+//all app routes
 app.use('/api/auth',authRouter)
 app.use('/api/message',messageroute)
 
