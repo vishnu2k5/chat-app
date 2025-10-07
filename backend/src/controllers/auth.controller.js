@@ -63,6 +63,7 @@ const signup = async (req, res) => {
 const login = async(req,res)=>{
     const { email, password } = req.body
     try {
+        if(!email||!password) return res.status(400).json({message:"all fields are requires "})
         const user = await User.findOne({ email })
         if (!user) {
             return res.status(400).json({ message: "invalid email or password" })
@@ -88,4 +89,27 @@ const logout = async(req,res)=>{
 
 }
 
-export { signup,login,logout }
+
+ const updateProfile = async (req, res) => {
+  try {
+    const { profilePic } = req.body;
+    if (!profilePic) return res.status(400).json({ message: "Profile pic is required" });
+
+    const userId = req.user._id;
+
+    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePic: uploadResponse.secure_url },
+      { new: true }
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("Error in update profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export { signup,login,logout,updateProfile }
