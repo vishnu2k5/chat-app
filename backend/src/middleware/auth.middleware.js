@@ -5,10 +5,6 @@ import "dotenv/config"
 
 
 
-
-
-
-
 const protectRoute = async(req,res,next)=>{
     try {
     const token = req.cookies.jwt_token
@@ -26,7 +22,7 @@ const protectRoute = async(req,res,next)=>{
 
     } catch (error) {
         console.error("there ia an error ",error)
-        return res.status(500).json({ message: "server error" })
+        next()
     }
 
 }
