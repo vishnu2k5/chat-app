@@ -40,7 +40,7 @@ const signup = async (req, res) => {
             const token = generateToken(savedUser._id, res)
             // console.log("res",res)
             // console.log("token  ",token)
-            res.status(201).json({ message: "user created successfully", user: savedUser })
+            res.status(200).json({ message: "user created successfully", user: savedUser })
             try {
                 await sendWelcomeEmail(savedUser.email,savedUser.fullname,process.env.CLIENT_URL)
                 
@@ -58,4 +58,34 @@ const signup = async (req, res) => {
     }
 }
 
-export { signup }
+
+
+const login = async(req,res)=>{
+    const { email, password } = req.body
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).json({ message: "invalid email or password" })
+        }
+        const match = bcrypt.compare(password,user.password)
+       if (!match) {
+            return res.status(400).json({ message: "invalid email or password" })
+        }
+       const token = generateToken(user._id,res);
+       res.status(200).json({message:"user loged in successfully",user})
+    } catch (error) {
+
+        console.error("there is an error ", error)
+        return res.status(500).json({ message: "server error" })
+    }
+
+
+}
+
+const logout = async(req,res)=>{
+    res.cookie("jwt_token","",{maxAge : 0})
+    res.status(200).json({message:"user loged out successfully "})
+
+}
+
+export { signup,login,logout }
