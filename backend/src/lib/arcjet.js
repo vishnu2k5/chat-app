@@ -18,13 +18,13 @@ const aj = arcjet({
       // Block all bots except the following // Google, Bing, etc
 
 
-    // detectBot({
-    //   mode: "LIVE",
-    //   allow: [
-    //     "CATEGORY:SEARCH_ENGINE", 
+    detectBot({
+      mode: "LIVE",
+      allow: [
+        "CATEGORY:SEARCH_ENGINE", 
         
-    //   ],
-    // }),
+      ],
+    }),
 
 
     // Create a slidingwindow rate limit. Other algorithms are supported.
