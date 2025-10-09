@@ -1,6 +1,6 @@
 import { Routes,Route } from "react-router"
 import ChatPage from "./pages/ChatPage"
-import SignUp from "./pages/signup"
+// import SignUp from "./pages/signup"
 import Login from "./pages/Login"
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
     <Routes>  
       <Route path="/" element={<ChatPage/>}/>
       <Route path="/login" element={<Login/>}/>
-      <Route path="/signup" element={<SignUp/>}/> 
+      {/* <Route path="/signup" element={<SignUp/>}/>  */}
     </Routes>
     </div>
     </>
