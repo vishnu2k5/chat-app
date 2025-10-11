@@ -5,6 +5,7 @@ import authRouter from './routes/auth.route.js';
 import messageroute from './routes/messages.route.js'
 import { connectDb } from './lib/db.js';
 import cookieparser from "cookie-parser"
+import cors from "cors"
 
 
 dotenv.config();
@@ -14,11 +15,12 @@ const PORT = process.env.PORT || 4001;
 const __dirname = path.resolve()
 
 
-
 //middleware for form data 
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(cookieparser())
+app.use(cors({origin:process.env.CLIENT_URL,credentials:true}))
+
 
 
 
@@ -40,7 +42,7 @@ app.use('/api/message',messageroute)
 
 
 //if production ready diploy
-if(process.env.NODE_ENV==="production"){
+if(process.env.NODE_ENV==="development"){
     app.use(express.static(path.join(__dirname,'../frontend/dist')))
     app.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, "../frontend","dist","index.html"));

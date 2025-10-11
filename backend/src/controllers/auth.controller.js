@@ -5,11 +5,12 @@ import { sendWelcomeEmail } from "../emails/emailHnadlers.js";
 import "dotenv/config"
 
 const signup = async (req, res) => {
-    const { fullname, email, password } = req.body;
-    try {
-        if (!fullname || !email || !password) {
+    const { fullName, email, password } = req.body;
+    // console.log(fullName, email, password )
+    if (!fullName || !email || !password) {
             return res.status(400).json({ message: "all fields are required" })
         }
+    try {
         if (password.length < 6) {
             return res.status(400).json({ message: "password must be at least 6 characters" })
         }
@@ -28,7 +29,7 @@ const signup = async (req, res) => {
 
         // create and persist the user
         const newuser = new User({
-            fullname: fullname,
+            fullname: fullName,
             email: email,
             password: hashpassword
         })
@@ -62,8 +63,8 @@ const signup = async (req, res) => {
 
 const login = async(req,res)=>{
     const { email, password } = req.body
+    if(!email||!password) return res.status(400).json({message:"all fields are requires "})
     try {
-        if(!email||!password) return res.status(400).json({message:"all fields are requires "})
         const user = await User.findOne({ email })
         if (!user) {
             return res.status(400).json({ message: "invalid email or password" })
@@ -73,7 +74,11 @@ const login = async(req,res)=>{
             return res.status(400).json({ message: "invalid email or password" })
         }
        const token = generateToken(user._id,res);
-       res.status(200).json({message:"user loged in successfully",user})
+       res.status(200).json({
+      _id: user._id,
+      fullName: user.fullname,
+      email: user.email,
+      profilePic: user.profilePic,})
     } catch (error) {
 
         console.error("there is an error ", error)

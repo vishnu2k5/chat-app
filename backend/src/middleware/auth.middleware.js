@@ -22,7 +22,7 @@ const protectRoute = async(req,res,next)=>{
 
     } catch (error) {
         console.error("there ia an error ",error)
-        next()
+        res.status(500).json({ message: "Internal server error" });
     }
 
 }
