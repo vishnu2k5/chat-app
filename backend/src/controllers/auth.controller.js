@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import generateToken from "../lib/utils.js"
 import { sendWelcomeEmail } from "../emails/emailHnadlers.js";
 import "dotenv/config"
+import cloudinary from "../lib/cloudinary.js";
 
 const signup = async (req, res) => {
     const { fullName, email, password } = req.body;

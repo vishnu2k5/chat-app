@@ -16,7 +16,7 @@ const __dirname = path.resolve()
 
 
 //middleware for form data 
-app.use(express.json())
+app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({extended:false}))
 app.use(cookieparser())
 app.use(cors({origin:process.env.CLIENT_URL,credentials:true}))

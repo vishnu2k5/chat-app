@@ -11,7 +11,7 @@ export const userChatStore = create((set,get)=>({
     selectedUser:null,
     isUsersLoding:false,
     isMessagesLoding:false,
-    isSoundEnabled :localStorage.getItem("isSoundEnabled")===true,
+    isSoundEnabled :JSON.parse(localStorage.getItem("isSoundEnabled"))===true,
 
 
     toggleSound : ()=>{
@@ -24,10 +24,11 @@ export const userChatStore = create((set,get)=>({
     setSelectedUser:(selectedUser)=>set({selectedUser:selectedUser}),
 
 
-    getAllcontacts: async()=>{
+    getAllContacts: async()=>{
         set({isUsersLoding:true})
         try {
         const res = await axiosInstance.get("/message/contacts")
+        console.log(res.data)
         set({allContacts:res.data})
         } catch (error) {
            toast.error(error.response.data.message);            
@@ -37,10 +38,11 @@ export const userChatStore = create((set,get)=>({
     },
 
 
-    getAllChatPartners: async()=>{
+    getMyChatPartners: async()=>{
         set({isUsersLoding:true})
         try {
         const res = await axiosInstance.get("/message/chats")
+        console.log(res)
         set({chats:res.data})
         } catch (error) {
            toast.error(error.response.data.message);            
@@ -49,6 +51,7 @@ export const userChatStore = create((set,get)=>({
         }
 
     },
+
 
 
 
