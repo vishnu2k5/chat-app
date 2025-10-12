@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ChatHome = () => {
+const MessageInput = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const ChatHome = () => {
   )
 }
 
-export default ChatHome
+export default MessageInput
