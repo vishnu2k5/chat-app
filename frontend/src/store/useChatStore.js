@@ -64,6 +64,19 @@ getMessagesByUserId: async (userId) => {
     } finally {
       set({ isMessagesLoading: false });
     }
-  },    
+  },   
+  sendMessage: async(messageData)=>{
+    const {selectedUser} = get();
+    const {messages} = get();
+    if(!selectedUser){
+        return toast.error("No user selected")
+    }
+    try {
+      const res = await axiosInstance.post(`/message/send/${selectedUser._id}`,messageData)
+      set({messages:[...messages,res.data]})
+    } catch (error) {
+      toast.error(error.response?.data?.message||"Failed to send message")
+    }
+  }, 
 
 }))

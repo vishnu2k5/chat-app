@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { use, useEffect,useRef } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { userChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader"; // ✅ Make sure you have this import
@@ -10,6 +10,7 @@ function ChatContainer() {
   // Access state and actions from Zustand stores
   const { selectedUser, getMessagesByUserId, messages,isMessagesLoading } = userChatStore();
   const { authUser } = useAuthStore();
+  const messageEndRef = useRef(null);
 
   // Fetch messages whenever selected user changes
   useEffect(() => {
@@ -18,6 +19,11 @@ function ChatContainer() {
       getMessagesByUserId(selectedUser._id);
     }
   }, [selectedUser, getMessagesByUserId]);
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return(
     <>
@@ -33,14 +39,16 @@ function ChatContainer() {
                   )}
                   {msg.text && <p className="mt-2">{msg.text}</p>}
                   <p className="text-xs mt-1 opacity-75 flex itema-center gap-1">
-                    {new Date(msg.createdAt).toISOString().slice(11,16)}
+                    {new Date(msg.createdAt).toLocaleTimeString(undefined,{
+                      hour:"2-digit",
+                      minute:"2-digit",})}
 
                   </p>
                   
               </div>
             </div>
           ))}
-
+          <div ref={messageEndRef}/>
         </div>
       ):isMessagesLoading?(
         <MessagesLoadingSkeleton/>

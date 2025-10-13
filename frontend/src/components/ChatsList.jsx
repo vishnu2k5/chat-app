@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import NoChatsFound  from './NoChatsFound';
 
 const ChatsList = () => {
-  const {chats, allContacts, setSelectedUser, isUsersLoading,getAllContacts,getMyChatPartners } = userChatStore();
+  const {chats,setSelectedUser, isUsersLoading,getMyChatPartners } = userChatStore();
 
   const { onlineUsers } = useAuthStore();
 
@@ -28,7 +28,7 @@ const ChatsList = () => {
           <div className="flex items-center gap-3">
             <div className={`avatar ${"offline"}`}>
               <div className="size-12 rounded-full">
-                {console.log(chat)}
+                {/* {console.log(chat)} */}
                 <img src={chat.profilePic || "/avatar.png"} alt={chat.fullname} />
               </div>
             </div>

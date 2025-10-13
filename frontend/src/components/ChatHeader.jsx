@@ -25,8 +25,8 @@ return (
     <div className='flex items-center space-x-3'>
         <div className='avatat online'>
             <div className='w-12 rounded-full'>
-                {console.log(selectedUser.fullname)}
-                <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullname}/>
+                {/* {console.log(selectedUser.fullname)} */}
+                <img src={selectedUser.profilePic || "/avatar.png"} alt={selectedUser.fullname}  />
             </div>
 
         </div>
