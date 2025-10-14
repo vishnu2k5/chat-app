@@ -1,6 +1,8 @@
 import Message from "../models/Message.js";
 import User from "../models/user.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId } from "../lib/socket.js";
+import { io } from "../lib/socket.js";
 
 
 
@@ -20,14 +22,16 @@ export const getAllContacts = async (req, res) => {
 export const getMessagesByUserId = async (req, res) => {
   try {
     const myId = req.user._id;
+    // console.log(myId)
     const { id: userToChatId } = req.params;
-
+    // console.log(userToChatId)
     const messages = await Message.find({
       $or: [
         { senderId: myId, receiverId: userToChatId },
         { senderId: userToChatId, receiverId: myId },
       ],
     });
+    // console.log(messages)
 
     res.status(200).json(messages);
   } catch (error) {
@@ -68,11 +72,13 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
+
+    
     //to do app
-    // const receiverSocketId = getReceiverSocketId(receiverId);
-    // if (receiverSocketId) {
-    //   io.to(receiverSocketId).emit("newMessage", newMessage);
-    // }
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
@@ -101,7 +107,7 @@ export const getChatPartners = async (req, res) => {
     ];
 
     const chatPartners = await User.find({ _id: { $in: chatPartnerIds } }).select("-password");
-
+    // console.log(chatPartners)
     res.status(200).json(chatPartners);
   } catch (error) {
     console.error("Error in getChatPartners: ", error.message);

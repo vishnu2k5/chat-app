@@ -8,7 +8,7 @@ import ActiveTabSwitch from "../components/ActiveTabSwitch"
 import ChatsList from '../components/ChatsList';
 import ConstactList from '../components/ConstactList';
 import ChatContainer from '../components/ChatContainer';
-import ChatHome from '../components/ChatHome';
+import NoConversationPlaceholder from '../components/NoConversationPlaceholder';
 
 const ChatPage = () => {
   const { logout} = useAuthStore()
@@ -28,7 +28,7 @@ const ChatPage = () => {
         {/* RIGHT SIDE */}
         
         <div className='flex-1 flex flex-col bg-slate-900/50 backdrop-blur-sm'>
-        {selectedUser?<ChatContainer/>:<ChatHome/>}
+        {selectedUser?<ChatContainer/>:<NoConversationPlaceholder/>}
         </div>
       </BorderAnimatedContainer>
     </div>

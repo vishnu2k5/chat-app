@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import generateToken from "../lib/utils.js"
 import { sendWelcomeEmail } from "../emails/emailHnadlers.js";
 import "dotenv/config"
+import cloudinary from "../lib/cloudinary.js";
 
 const signup = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -69,7 +70,7 @@ const login = async(req,res)=>{
         if (!user) {
             return res.status(400).json({ message: "invalid email or password" })
         }
-        const match = bcrypt.compare(password,user.password)
+        const match = await bcrypt.compare(password,user.password)
        if (!match) {
             return res.status(400).json({ message: "invalid email or password" })
         }
@@ -88,7 +89,7 @@ const login = async(req,res)=>{
 
 }
 
-const logout = async(req,res)=>{
+const logout = async(_,res)=>{
     res.cookie("jwt_token","",{maxAge : 0})
     res.status(200).json({message:"user loged out successfully "})
 
