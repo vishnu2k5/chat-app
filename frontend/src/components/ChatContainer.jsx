@@ -8,7 +8,7 @@ import MessagesLoadingSkeleton from "./MessagesLodingSkeleton";
 
 function ChatContainer() {
   // Access state and actions from Zustand stores
-  const { selectedUser, getMessagesByUserId, messages,isMessagesLoading } = userChatStore();
+  const { selectedUser, getMessagesByUserId, messages,isMessagesLoading, subToMessage, unSubToMessage } = userChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
 
@@ -17,8 +17,11 @@ function ChatContainer() {
     if (selectedUser?._id) {
       // console.log(selectedUser._id)
       getMessagesByUserId(selectedUser._id);
+      subToMessage();
+
+      return () => unSubToMessage();
     }
-  }, [selectedUser, getMessagesByUserId]);
+  }, [selectedUser, getMessagesByUserId, subToMessage, unSubToMessage]);
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
