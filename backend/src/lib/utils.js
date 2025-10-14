@@ -5,11 +5,13 @@ const generateToken = async(userId,res)=>{
         expiresIn:"1d",
     })
 
-    res.cookie("jwt_token",token,{
-        maxAge:1*24*60*60*1000,
-        httpOnly:true,
-        sameSite:"strict",
-        secure:process.env.NODE_ENV==='devlopment'?false:true
+    const isDev = process.env.NODE_ENV !== 'production'
+    res.cookie("jwt_token", token, {
+        maxAge: 1 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        sameSite: isDev ? 'lax' : 'strict',
+        secure: isDev ? false : true,
+        path: '/',
     })
     return token
 }

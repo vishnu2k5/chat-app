@@ -70,7 +70,7 @@ const login = async(req,res)=>{
         if (!user) {
             return res.status(400).json({ message: "invalid email or password" })
         }
-        const match = bcrypt.compare(password,user.password)
+        const match = await bcrypt.compare(password,user.password)
        if (!match) {
             return res.status(400).json({ message: "invalid email or password" })
         }
@@ -89,7 +89,7 @@ const login = async(req,res)=>{
 
 }
 
-const logout = async(req,res)=>{
+const logout = async(_,res)=>{
     res.cookie("jwt_token","",{maxAge : 0})
     res.status(200).json({message:"user loged out successfully "})
 

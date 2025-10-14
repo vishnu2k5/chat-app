@@ -6,10 +6,14 @@ import messageroute from './routes/messages.route.js'
 import { connectDb } from './lib/db.js';
 import cookieparser from "cookie-parser"
 import cors from "cors"
-
-
+import { app,server } from './lib/socket.js';
 dotenv.config();
-const app = express();
+
+
+
+
+
+
 const PORT = process.env.PORT || 4001;
 //making ready for diployment 
 const __dirname = path.resolve()
@@ -49,7 +53,7 @@ if(process.env.NODE_ENV==="development"){
     });
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     connectDb()
 
